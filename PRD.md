@@ -148,13 +148,13 @@ A Next.js + Tailwind CSS showcase website for a 3D prints business. Visitors can
 **Description:** As a visitor, I want to submit an order inquiry so that the shop owner can follow up with me.
 
 **Acceptance Criteria:**
-- [ ] `/contact` form collects: name, email, product of interest (pre-filled if arriving from detail page), message
-- [ ] All fields required; inline validation errors shown for empty/invalid values
-- [ ] Valid submission sends an email to `CONTACT_EMAIL` via Nodemailer (or Resend)
-- [ ] Success message shown after submission; form fields cleared
-- [ ] Error message shown if the email send fails
-- [ ] Typecheck passes
-- [ ] Verify changes work in browser
+- [x] `/contact` form collects: name, email, product of interest (pre-filled if arriving from detail page), message
+- [x] All fields required; inline validation errors shown for empty/invalid values
+- [x] Valid submission sends an email to `CONTACT_EMAIL` via Nodemailer (or Resend)
+- [x] Success message shown after submission; form fields cleared
+- [x] Error message shown if the email send fails
+- [x] Typecheck passes
+- [x] Verify changes work in browser
 
 ---
 

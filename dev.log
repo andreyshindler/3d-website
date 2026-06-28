@@ -7,15 +7,25 @@
   - Environments: .env
 
  ✓ Starting...
- ✓ Ready in 1849ms
- ○ Compiling / ...
- ✓ Compiled / in 1959ms (565 modules)
- GET / 200 in 2031ms
- ✓ Compiled in 107ms (266 modules)
- GET / 200 in 73ms
- ✓ Compiled /catalog in 471ms (604 modules)
- ⨯ Error: Invalid src prop (https://placehold.co/600x400?text=Dragon+Figurine) on `next/image`, hostname "placehold.co" is not configured under images in your `next.config.js`
-See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
-    at Array.map (<anonymous>)
-digest: "2837926195"
- GET /catalog 500 in 794ms
+ ✓ Ready in 2.1s
+ ○ Compiling /contact ...
+ ✓ Compiled /contact in 4.9s (640 modules)
+ GET /contact 200 in 5281ms
+ ✓ Compiled in 432ms (269 modules)
+ GET /contact?product=TestWidget 200 in 54ms
+ POST /contact 200 in 33ms
+ GET /contact?product=TestWidget 200 in 67ms
+ GET /contact 200 in 54ms
+ POST /contact 200 in 119ms
+ POST /contact 200 in 30ms
+ GET /contact 200 in 37ms
+ POST /contact 200 in 32ms
+ GET /contact 200 in 58ms
+ POST /contact 200 in 18ms
+ ○ Compiling /catalog ...
+ ✓ Compiled /catalog in 608ms (632 modules)
+ GET /catalog 200 in 1151ms
+ ✓ Compiled /catalog/[id] in 358ms (643 modules)
+ GET /catalog 200 in 98ms
+ GET /catalog 200 in 39ms
+[?25h

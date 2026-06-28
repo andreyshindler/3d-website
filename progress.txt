@@ -155,3 +155,19 @@
   - `notFound()` from `next/navigation` handles both NaN and missing-record cases cleanly in a single code path
   - `&larr;` (HTML entity) in JSX renders as "←" and is found by Playwright's `{ hasText: "Back to Catalog" }` since hasText does substring matching
 ---
+
+## Iteration 11 — US-011: Order inquiry contact form
+- Installed `nodemailer` (dependency) and `@types/nodemailer` (devDependency)
+- Created `app/(public)/contact/actions.ts` — `"use server"` action `submitContactForm` validates all 4 fields (name, email regex, product, message), sends via Nodemailer SMTP, returns `{ status: "success" }` or `{ status: "error", errorMessage }` or `{ errors: { ... } }` for validation failures
+- Created `app/(public)/contact/ContactForm.tsx` — `"use client"` component using `useFormState` + `useFormStatus`; `formKey` state incremented on success (via `useEffect`) to reset uncontrolled form fields; green success banner and red error banner shown on respective states
+- Created `app/(public)/contact/page.tsx` — server component that reads `searchParams.product` and passes it as `defaultProduct` to `ContactForm` for pre-fill
+- Updated `.env.example` to document `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`
+- `npm run typecheck` passes; browser verification confirms all acceptance criteria
+- Files affected: `app/(public)/contact/actions.ts`, `app/(public)/contact/ContactForm.tsx`, `app/(public)/contact/page.tsx`, `.env.example`, `package.json`
+- Learnings for next cycles:
+  - `useFormState` state must distinguish validation errors (`errors` key) from send errors (`status: "error"`) — keep them in separate keys to avoid conflicts
+  - Resetting uncontrolled form fields on success: use `key={formKey}` on `<form>` and increment via `useEffect` when `state.status === "success"`; `useEffect` with `[state.status]` dependency fires after render so the success banner appears before the form resets
+  - Browser `type="email"` blocks submission for invalid addresses before React/Next.js server action runs; server-side regex validation is still needed for non-browser clients; to test server-side email validation with Playwright, use `nativeInputValueSetter` via `page.evaluate` then change `el.type = "text"` before submitting
+  - SMTP env vars (`CONTACT_EMAIL`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`) must all be set in `.env` for email delivery to work; missing `CONTACT_EMAIL` surfaces a dedicated "Server configuration error" banner
+  - `nodemailer.createTransport` + `transporter.sendMail` wrapped in `try/catch` gives clean error handling — no separate connection-test step needed
+---
