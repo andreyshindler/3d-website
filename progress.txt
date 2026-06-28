@@ -129,3 +129,16 @@
   - After deleting a page file, clear `.next/` before running `tsc --noEmit`; otherwise stale `.next/types/app/page.ts` references the deleted file and causes `TS2307`
   - Future public pages (catalog, contact) should go under `app/(public)/` to automatically inherit the public layout
 ---
+
+## Iteration 9 — US-009: Public catalog page
+- Created `app/(public)/catalog/page.tsx` — async server component fetching `available: true` products ordered by `createdAt desc`
+- Created `app/(public)/catalog/CatalogGrid.tsx` — client component with `useState` for selected category; derives unique category list from products; client-side filtering; shows empty state when no products match
+- Product cards use `<img>` (not Next.js `<Image>`) to avoid needing to configure every image hostname in `next.config.js`
+- `npm run typecheck` passes; browser verification confirms: 6 cards render in 3-col grid, category filter buttons work client-side, card clicks navigate to `/catalog/[id]`
+- Files affected: `app/(public)/catalog/page.tsx`, `app/(public)/catalog/CatalogGrid.tsx`
+- Learnings for next cycles:
+  - `next/image` requires every external hostname to be listed under `images.remotePatterns` in `next.config.js`; using `<img>` avoids this for MVP with arbitrary external image URLs
+  - `eslint-disable-next-line @next/next/no-img-element` suppresses the Next.js lint warning when intentionally using `<img>`
+  - Playwright headless default viewport is mobile-sized; pass `{ viewport: { width: 1280, height: 800 } }` to simulate desktop and avoid hitting hamburger buttons
+  - Category list derived via `new Set(products.map(p => p.category))` on the client — no separate query needed
+---

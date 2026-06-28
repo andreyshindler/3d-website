@@ -122,13 +122,13 @@ A Next.js + Tailwind CSS showcase website for a 3D prints business. Visitors can
 **Description:** As a visitor, I want to browse all available prints so that I can find something I like.
 
 **Acceptance Criteria:**
-- [ ] `/catalog` displays a responsive grid of product cards (image, name, category, price)
-- [ ] Only products with `available: true` are shown
-- [ ] Category filter buttons above the grid filter products client-side
-- [ ] Clicking a card navigates to the product detail page
-- [ ] Empty state message shown when no products match the filter
-- [ ] Typecheck passes
-- [ ] Verify changes work in browser
+- [x] `/catalog` displays a responsive grid of product cards (image, name, category, price)
+- [x] Only products with `available: true` are shown
+- [x] Category filter buttons above the grid filter products client-side
+- [x] Clicking a card navigates to the product detail page
+- [x] Empty state message shown when no products match the filter
+- [x] Typecheck passes
+- [x] Verify changes work in browser
 
 ---
 

@@ -1,0 +1,21 @@
+
+> 3d-prints-web@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+  - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 1849ms
+ ○ Compiling / ...
+ ✓ Compiled / in 1959ms (565 modules)
+ GET / 200 in 2031ms
+ ✓ Compiled in 107ms (266 modules)
+ GET / 200 in 73ms
+ ✓ Compiled /catalog in 471ms (604 modules)
+ ⨯ Error: Invalid src prop (https://placehold.co/600x400?text=Dragon+Figurine) on `next/image`, hostname "placehold.co" is not configured under images in your `next.config.js`
+See more info: https://nextjs.org/docs/messages/next-image-unconfigured-host
+    at Array.map (<anonymous>)
+digest: "2837926195"
+ GET /catalog 500 in 794ms
