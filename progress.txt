@@ -142,3 +142,16 @@
   - Playwright headless default viewport is mobile-sized; pass `{ viewport: { width: 1280, height: 800 } }` to simulate desktop and avoid hitting hamburger buttons
   - Category list derived via `new Set(products.map(p => p.category))` on the client — no separate query needed
 ---
+
+## Iteration 10 — US-010: Product detail page
+- Created `app/(public)/catalog/[id]/page.tsx` — async server component; parses `params.id` with `parseInt`, calls `notFound()` for `isNaN` or missing product; fetches `available: true` product; renders image, name, category, price, description, and "Request Order" link
+- "Request Order" links to `/contact?product=<encoded-name>` via `encodeURIComponent`
+- Both non-numeric IDs (`/catalog/abc`) and unknown numeric IDs (`/catalog/99999`) return Next.js 404
+- Used `<img>` (not `next/image`) with `eslint-disable-next-line` comment — consistent with catalog grid approach
+- `npm run typecheck` passes; Playwright verification confirms all 9 acceptance criteria (name, category, price, image, request-order link, 404 for bad IDs, back-link)
+- Files affected: `app/(public)/catalog/[id]/page.tsx`
+- Learnings for next cycles:
+  - Always use a known valid product ID in Playwright tests — seeded products may start at IDs > 1 after delete/re-seed cycles
+  - `notFound()` from `next/navigation` handles both NaN and missing-record cases cleanly in a single code path
+  - `&larr;` (HTML entity) in JSX renders as "←" and is found by Playwright's `{ hasText: "Back to Catalog" }` since hasText does substring matching
+---

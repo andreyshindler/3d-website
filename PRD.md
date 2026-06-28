@@ -136,11 +136,11 @@ A Next.js + Tailwind CSS showcase website for a 3D prints business. Visitors can
 **Description:** As a visitor, I want to view full details of a print so that I can decide whether to order it.
 
 **Acceptance Criteria:**
-- [ ] `/catalog/[id]` shows product image, name, description, category, and price
-- [ ] "Request Order" button links to the contact form with the product name pre-filled
-- [ ] 404 page returned for unknown product IDs
-- [ ] Typecheck passes
-- [ ] Verify changes work in browser
+- [x] `/catalog/[id]` shows product image, name, description, category, and price
+- [x] "Request Order" button links to the contact form with the product name pre-filled
+- [x] 404 page returned for unknown product IDs
+- [x] Typecheck passes
+- [x] Verify changes work in browser
 
 ---
 
