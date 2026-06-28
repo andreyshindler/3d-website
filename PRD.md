@@ -45,10 +45,10 @@ A Next.js + Tailwind CSS showcase website for a 3D prints business. Visitors can
 **Description:** As a developer, I want sample products seeded so that the catalog is not empty during development.
 
 **Acceptance Criteria:**
-- [ ] `prisma/seed.ts` inserts at least 6 diverse sample products across 2+ categories
-- [ ] `npx prisma db seed` runs without errors
-- [ ] Products are visible via `npx prisma studio`
-- [ ] Typecheck passes
+- [x] `prisma/seed.ts` inserts at least 6 diverse sample products across 2+ categories
+- [x] `npx prisma db seed` runs without errors
+- [x] Products are visible via `npx prisma studio`
+- [x] Typecheck passes
 
 ---
 

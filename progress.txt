@@ -25,6 +25,21 @@
   - Generated client path: `app/generated/prisma` — import as `@/app/generated/prisma`
 ---
 
+## Iteration 3 — US-003: Product seed script
+- Created `prisma/seed.ts` with 8 sample products across 3 categories (Figurines, Home Decor, Functional Parts)
+- Installed `tsx` (devDependency) to run TypeScript seed scripts
+- Installed `@prisma/adapter-libsql` and `@libsql/client` (dependencies) required by Prisma 7 SQLite runtime
+- Added `seed` config to `prisma.config.ts` migrations section (NOT package.json — Prisma 7 ignores package.json `prisma.seed`)
+- `npx prisma db seed` runs successfully; `npm run typecheck` passes
+- Files affected: `prisma/seed.ts`, `prisma.config.ts`, `package.json`
+- Learnings for next cycles:
+  - Prisma 7 requires a driver adapter for `PrismaClient` — `new PrismaClient()` without options throws `PrismaClientInitializationError`
+  - For SQLite, use `@prisma/adapter-libsql` with the `PrismaLibSql` factory (case-sensitive: `PrismaLibSql`, not `PrismaLibSQL`)
+  - Seed config in Prisma 7 goes in `prisma.config.ts` under `migrations.seed`, not in `package.json`'s `prisma.seed` key
+  - `tsx` handles TypeScript files natively without needing a separate tsconfig for Node.js
+  - The `DATABASE_URL` env var (`file:./dev.db`) points to project root; `import "dotenv/config"` in seed.ts loads `.env` automatically
+---
+
 ## Iteration 2 — US-002: Product database schema
 - Added `Product` model to `prisma/schema.prisma` with all required fields (id, name, description, price Float, imageUrl, category, available Boolean default true, createdAt DateTime)
 - Ran `npx prisma migrate dev --name add-product-model` — created migration `20260628064829_add_product_model` and SQLite `dev.db`
