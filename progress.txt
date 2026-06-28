@@ -40,6 +40,22 @@
   - The `DATABASE_URL` env var (`file:./dev.db`) points to project root; `import "dotenv/config"` in seed.ts loads `.env` automatically
 ---
 
+## Iteration 4 — US-004: Admin authentication
+- Implemented `/admin/login` page (email + password form with inline error display)
+- API route `POST /api/admin/login` validates password against `ADMIN_PASSWORD` env var, sets HMAC-SHA256 HttpOnly session cookie (`admin_session`), redirects to `/admin/products`
+- API route `POST /api/admin/logout` clears cookie and redirects to `/admin/login`
+- Middleware (`middleware.ts`) protects all `/admin/*` routes (except `/admin/login`); validates cookie by recomputing HMAC via Web Crypto API (`crypto.subtle`)
+- Protected layout (`app/admin/(protected)/layout.tsx`) renders admin nav with Logout button
+- Added `required` to email input on login page (minor fix found during browser verification)
+- Files affected: `app/admin/login/page.tsx`, `app/api/admin/login/route.ts`, `app/api/admin/logout/route.ts`, `middleware.ts`, `app/admin/(protected)/layout.tsx`, `app/admin/(protected)/page.tsx`, `app/admin/layout.tsx`
+- Learnings for next cycles:
+  - Middleware must use Web Crypto API (`crypto.subtle`) — Node.js `crypto` module is not available in the Edge Runtime used by Next.js middleware
+  - Login route (API handler) runs in Node.js runtime, so `import { createHmac } from "crypto"` works there
+  - Both compute identical HMAC-SHA256 output given same key/message — critical that SESSION_PAYLOAD constant stays in sync between route and middleware
+  - Route group `(protected)` in `app/admin/(protected)/` keeps the admin layout separate from the public login page without affecting URL paths
+  - `middleware.ts` at repo root with `matcher: ["/admin/:path*"]` is the correct pattern for protecting all admin sub-routes
+---
+
 ## Iteration 2 — US-002: Product database schema
 - Added `Product` model to `prisma/schema.prisma` with all required fields (id, name, description, price Float, imageUrl, category, available Boolean default true, createdAt DateTime)
 - Ran `npx prisma migrate dev --name add-product-model` — created migration `20260628064829_add_product_model` and SQLite `dev.db`

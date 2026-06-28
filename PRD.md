@@ -56,13 +56,13 @@ A Next.js + Tailwind CSS showcase website for a 3D prints business. Visitors can
 **Description:** As the shop owner, I want a login page protecting the admin panel so that unauthorized users cannot modify the catalog.
 
 **Acceptance Criteria:**
-- [ ] `/admin/login` page with email + password form
-- [ ] Credentials checked against `ADMIN_PASSWORD` env var
-- [ ] Successful login sets a secure HTTP-only session cookie
-- [ ] All `/admin/*` routes redirect to `/admin/login` when unauthenticated
-- [ ] Logout clears the session cookie and redirects to login
-- [ ] Typecheck passes
-- [ ] Verify changes work in browser
+- [x] `/admin/login` page with email + password form
+- [x] Credentials checked against `ADMIN_PASSWORD` env var
+- [x] Successful login sets a secure HTTP-only session cookie
+- [x] All `/admin/*` routes redirect to `/admin/login` when unauthenticated
+- [x] Logout clears the session cookie and redirects to login
+- [x] Typecheck passes
+- [x] Verify changes work in browser
 
 ---
 
