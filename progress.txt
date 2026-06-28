@@ -96,3 +96,20 @@
   - `revalidatePath` must be called before `redirect` (both from `next/navigation`/`next/cache`) so the products list is fresh after redirect
   - `type="number"` inputs naturally reject non-numeric strings in browsers; Playwright's `page.fill` also enforces this — probe non-numeric price via `page.evaluate` if needed
 ---
+
+## Iteration 7 — US-007: Admin edit and delete product
+- Created `app/admin/(protected)/products/[id]/actions.ts` with `updateProduct(id: number, prevState, formData)` and `deleteProduct(id: number)` server actions
+- Created `app/admin/(protected)/products/[id]/edit/EditProductForm.tsx` — client component using `useFormState` with `updateProduct.bind(null, product.id)` to curry the numeric id
+- Created `app/admin/(protected)/products/[id]/edit/page.tsx` — server component that fetches product, calls `notFound()` for unknown or non-numeric ids, renders `<EditProductForm product={product} />`
+- Created `app/admin/(protected)/products/DeleteButton.tsx` — client component that uses `useTransition` + `window.confirm` to confirm before calling a passed-in bound delete action
+- Updated `app/admin/(protected)/products/page.tsx` to import `deleteProduct` and render `<DeleteButton deleteAction={deleteProduct.bind(null, product.id)} />` per row
+- `npm run typecheck` passes; browser verification confirms all four acceptance criteria
+- Files affected: `app/admin/(protected)/products/[id]/actions.ts`, `app/admin/(protected)/products/[id]/edit/EditProductForm.tsx`, `app/admin/(protected)/products/[id]/edit/page.tsx`, `app/admin/(protected)/products/DeleteButton.tsx`, `app/admin/(protected)/products/page.tsx`
+- Learnings for next cycles:
+  - Product `id` is `Int` in the Prisma schema (`@id @default(autoincrement())`); always parse `params.id` with `parseInt(params.id, 10)` in server components before passing to Prisma
+  - Product type in Prisma 7 generated client is `ProductModel` (from `@/app/generated/prisma/models`), NOT `Product`
+  - Bound server actions can be passed as props from server to client components — pattern `action.bind(null, id)` curries the id; `useFormState(boundAction, initialState)` works correctly
+  - `DeleteButton` uses `useTransition` so the pending state is available; `window.confirm` must be called synchronously before `startTransition` — putting confirm inside `startTransition` may be batched/deferred in React 18
+  - To start the dev server for Playwright verification in a single PowerShell session: `Start-Process -PassThru -NoNewWindow cmd.exe "/c npm run dev > log 2>&1"`, poll port 3000 until ready, then run the test, then `Stop-Process`
+  - Kill lingering processes on port 3000 before starting a new server (`netstat -ano | Select-String ":3000 "`) to avoid "address already in use" failures
+---

@@ -95,12 +95,12 @@ A Next.js + Tailwind CSS showcase website for a 3D prints business. Visitors can
 **Description:** As the shop owner, I want to edit or remove a product so that the catalog stays accurate.
 
 **Acceptance Criteria:**
-- [ ] `/admin/products/[id]/edit` pre-fills all fields from the existing product
-- [ ] Saving updates the record and redirects to `/admin/products`
-- [ ] Delete button on the list page removes the product after a confirmation prompt
-- [ ] Deleted product no longer appears in admin list or public catalog
-- [ ] Typecheck passes
-- [ ] Verify changes work in browser
+- [x] `/admin/products/[id]/edit` pre-fills all fields from the existing product
+- [x] Saving updates the record and redirects to `/admin/products`
+- [x] Delete button on the list page removes the product after a confirmation prompt
+- [x] Deleted product no longer appears in admin list or public catalog
+- [x] Typecheck passes
+- [x] Verify changes work in browser
 
 ---
 
