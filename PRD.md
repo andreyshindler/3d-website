@@ -108,13 +108,13 @@ A Next.js + Tailwind CSS showcase website for a 3D prints business. Visitors can
 **Description:** As a visitor, I want consistent navigation so that I can move around the site easily.
 
 **Acceptance Criteria:**
-- [ ] Header includes site logo/name and nav links: Home, Catalog, Contact
-- [ ] Active nav link is visually highlighted
-- [ ] Footer includes site name and a brief tagline
-- [ ] Layout is responsive (mobile hamburger menu collapses nav links)
-- [ ] Layout wraps all public pages
-- [ ] Typecheck passes
-- [ ] Verify changes work in browser
+- [x] Header includes site logo/name and nav links: Home, Catalog, Contact
+- [x] Active nav link is visually highlighted
+- [x] Footer includes site name and a brief tagline
+- [x] Layout is responsive (mobile hamburger menu collapses nav links)
+- [x] Layout wraps all public pages
+- [x] Typecheck passes
+- [x] Verify changes work in browser
 
 ---
 

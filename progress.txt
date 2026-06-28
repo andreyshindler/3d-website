@@ -113,3 +113,19 @@
   - To start the dev server for Playwright verification in a single PowerShell session: `Start-Process -PassThru -NoNewWindow cmd.exe "/c npm run dev > log 2>&1"`, poll port 3000 until ready, then run the test, then `Stop-Process`
   - Kill lingering processes on port 3000 before starting a new server (`netstat -ano | Select-String ":3000 "`) to avoid "address already in use" failures
 ---
+
+## Iteration 8 — US-008: Site layout (header + footer)
+- Created `app/components/Header.tsx` — `"use client"` component using `usePathname()` for active link highlighting; hamburger toggle via `useState`; desktop nav hidden on mobile (`hidden sm:flex`), hamburger visible on mobile (`sm:hidden`)
+- Created `app/components/Footer.tsx` — simple server component with site name and tagline
+- Created `app/(public)/layout.tsx` — wraps public pages with Header + Footer using flex-col min-h-screen layout
+- Created `app/(public)/page.tsx` — clean home page landing with links to Catalog and Contact
+- Deleted `app/page.tsx` (conflicted with `app/(public)/page.tsx` for the `/` route; Next.js App Router allows only one page per resolved URL)
+- Updated `app/layout.tsx` metadata (title, description) to reflect shop name
+- Cleared `.next` cache before typecheck (stale type references to deleted `app/page.tsx` caused TS errors)
+- Files affected: `app/components/Header.tsx`, `app/components/Footer.tsx`, `app/(public)/layout.tsx`, `app/(public)/page.tsx`, `app/layout.tsx`; deleted `app/page.tsx`
+- Learnings for next cycles:
+  - Route group `(public)` cleanly scopes the public Header+Footer layout without touching admin routes — admin pages inherit from their own `app/admin/` layout tree
+  - `app/page.tsx` and `app/(public)/page.tsx` both resolve to `/` — only one can exist; must delete the former
+  - After deleting a page file, clear `.next/` before running `tsc --noEmit`; otherwise stale `.next/types/app/page.ts` references the deleted file and causes `TS2307`
+  - Future public pages (catalog, contact) should go under `app/(public)/` to automatically inherit the public layout
+---
