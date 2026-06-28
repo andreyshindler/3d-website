@@ -70,11 +70,11 @@ A Next.js + Tailwind CSS showcase website for a 3D prints business. Visitors can
 **Description:** As the shop owner, I want to see all products in the admin panel so that I can manage them.
 
 **Acceptance Criteria:**
-- [ ] `/admin/products` lists all products in a table (name, category, price, available status)
-- [ ] Each row has Edit and Delete action buttons
-- [ ] Page is only accessible when authenticated
-- [ ] Typecheck passes
-- [ ] Verify changes work in browser
+- [x] `/admin/products` lists all products in a table (name, category, price, available status)
+- [x] Each row has Edit and Delete action buttons
+- [x] Page is only accessible when authenticated
+- [x] Typecheck passes
+- [x] Verify changes work in browser
 
 ---
 

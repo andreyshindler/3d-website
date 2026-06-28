@@ -67,3 +67,17 @@
   - Must run `prisma generate` separately after migration (migrate dev does not always regenerate in Prisma 7+)
   - Use `NODE_TLS_REJECT_UNAUTHORIZED=0` only for `npx prisma` commands, not for npm scripts
 ---
+
+## Iteration 5 — US-005: Admin product list
+- Created `lib/prisma.ts` with a singleton PrismaClient using `PrismaLibSql` adapter (global caching for hot-reload safety in dev)
+- Created `app/admin/(protected)/products/page.tsx` as an async server component that fetches all products ordered by `createdAt desc` and renders a table
+- Table columns: Name, Category, Price (formatted with `.toFixed(2)`), Available (green/gray badge), Actions (Edit link + Delete placeholder)
+- Edit links to `/admin/products/[id]/edit` (wired for US-007); Delete rendered as disabled `<span>` (confirmation + logic deferred to US-007)
+- Authentication enforced by existing middleware — unauthenticated GET returns 307 → `/admin/login`
+- Files affected: `lib/prisma.ts`, `app/admin/(protected)/products/page.tsx`
+- Learnings for next cycles:
+  - Shared Prisma singleton lives in `lib/prisma.ts`; uses `globalThis` guard to survive hot-reload without exhausting libsql connections
+  - Server components can directly `await prisma.product.findMany()` — no API route needed for read-only admin queries
+  - Prisma 7 + libsql adapter works fine in Next.js server components (Node.js runtime, not Edge)
+  - Delete button scoped to US-007; renders as a static `<span>` in US-005 to avoid shipping broken UI
+---
