@@ -1,0 +1,26 @@
+# Progress Log
+
+## Learnings
+(Notes discovered during implementation)
+
+- Prisma binary downloads require `NODE_TLS_REJECT_UNAUTHORIZED=0` due to corporate proxy SSL cert chain
+- `create-next-app` cannot run in a directory with existing files; scaffold in a subdir then move files
+- `create-next-app@14` with interactive prompts ignores `--yes`; pass explicit flags (`--eslint`, `--typescript`, etc.) and pipe a line to stdin
+- Prisma 7.8.0 (latest) uses `prisma.config.ts` instead of `url` in `schema.prisma`; generator outputs to `app/generated/prisma`
+- `@prisma/client` must be in `dependencies` (not `devDependencies`); `dotenv` needed for `prisma.config.ts`
+
+---
+
+## Iteration 1 — US-001: Project scaffold
+- Scaffolded Next.js 14 + TypeScript + Tailwind + ESLint + App Router via `create-next-app@14` in a temp subdir
+- Installed Prisma 7.8.0 + `@prisma/client` + `dotenv`; initialized with `prisma init --datasource-provider sqlite`
+- Added `postinstall` and `typecheck` scripts to `package.json`; renamed package from "scaffold" to "3d-prints-web"
+- Created `.env.example` with `DATABASE_URL`, `ADMIN_PASSWORD`, `CONTACT_EMAIL`
+- Ran `prisma generate` (with `NODE_TLS_REJECT_UNAUTHORIZED=0`) — client emitted to `app/generated/prisma`
+- `npm run typecheck` passes; `npm run dev` starts and reports "Ready in 2s"
+- Files affected: `package.json`, `.env.example`, `prisma/schema.prisma`, `prisma.config.ts`, `app/generated/prisma/*`
+- Learnings for next cycles:
+  - Use `NODE_TLS_REJECT_UNAUTHORIZED=0` for all `npx prisma` commands on this machine
+  - Prisma 7+ config lives in `prisma.config.ts`; schema has no `url` in datasource block
+  - Generated client path: `app/generated/prisma` — import as `@/app/generated/prisma`
+---
