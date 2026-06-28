@@ -24,3 +24,15 @@
   - Prisma 7+ config lives in `prisma.config.ts`; schema has no `url` in datasource block
   - Generated client path: `app/generated/prisma` — import as `@/app/generated/prisma`
 ---
+
+## Iteration 2 — US-002: Product database schema
+- Added `Product` model to `prisma/schema.prisma` with all required fields (id, name, description, price Float, imageUrl, category, available Boolean default true, createdAt DateTime)
+- Ran `npx prisma migrate dev --name add-product-model` — created migration `20260628064829_add_product_model` and SQLite `dev.db`
+- Ran `npx prisma generate` — client re-emitted to `app/generated/prisma`
+- `npm run typecheck` passes
+- Files affected: `prisma/schema.prisma`, `prisma/migrations/20260628064829_add_product_model/migration.sql`, `prisma/dev.db`, `app/generated/prisma/*`
+- Learnings for next cycles:
+  - `prisma migrate dev` auto-creates the SQLite db file if missing
+  - Must run `prisma generate` separately after migration (migrate dev does not always regenerate in Prisma 7+)
+  - Use `NODE_TLS_REJECT_UNAUTHORIZED=0` only for `npx prisma` commands, not for npm scripts
+---

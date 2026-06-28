@@ -34,10 +34,10 @@ A Next.js + Tailwind CSS showcase website for a 3D prints business. Visitors can
 **Description:** As a developer, I want a Product table in the database so that product data can be persisted.
 
 **Acceptance Criteria:**
-- [ ] `Product` model includes: `id`, `name`, `description`, `price` (Float), `imageUrl` (String), `category` (String), `available` (Boolean, default true), `createdAt`
-- [ ] Prisma migration runs successfully (`npx prisma migrate dev`)
-- [ ] Prisma Client generated without errors
-- [ ] Typecheck passes
+- [x] `Product` model includes: `id`, `name`, `description`, `price` (Float), `imageUrl` (String), `category` (String), `available` (Boolean, default true), `createdAt`
+- [x] Prisma migration runs successfully (`npx prisma migrate dev`)
+- [x] Prisma Client generated without errors
+- [x] Typecheck passes
 
 ---
 

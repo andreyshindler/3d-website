@@ -11,3 +11,14 @@ generator client {
 datasource db {
   provider = "sqlite"
 }
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  imageUrl    String
+  category    String
+  available   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
