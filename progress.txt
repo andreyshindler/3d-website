@@ -81,3 +81,18 @@
   - Prisma 7 + libsql adapter works fine in Next.js server components (Node.js runtime, not Edge)
   - Delete button scoped to US-007; renders as a static `<span>` in US-005 to avoid shipping broken UI
 ---
+
+## Iteration 6 — US-006: Admin create product
+- Created `app/admin/(protected)/products/new/actions.ts` — server action `createProduct` with validation for required fields (name, price, imageUrl, category), Prisma insert, `revalidatePath`, and `redirect`
+- Created `app/admin/(protected)/products/new/page.tsx` — client component using `useFormState` (React 18 / Next.js 14) with inline validation error display per field and `useFormStatus` for the pending submit button
+- Available checkbox defaults to `true` (checked)
+- Description field is optional; all other four fields are required with inline error messages
+- `npm run typecheck` passes; browser verification confirms: form renders all 6 fields, empty submit shows 4 required-field errors, valid submit creates product and redirects to `/admin/products`, new product immediately visible in list
+- Files affected: `app/admin/(protected)/products/new/actions.ts`, `app/admin/(protected)/products/new/page.tsx`
+- Learnings for next cycles:
+  - Admin layout has its own `<form action="/api/admin/logout"><button type="submit">` — any Playwright selector `button[type="submit"]` matches BOTH the logout and the page form; always use `:has-text("...")` to disambiguate
+  - `useFormState` is the React 18 API (from `react-dom`); `useActionState` is React 19 only
+  - Server actions in `"use server"` files must be in a separate file from `"use client"` components; they can be co-located in the same directory
+  - `revalidatePath` must be called before `redirect` (both from `next/navigation`/`next/cache`) so the products list is fresh after redirect
+  - `type="number"` inputs naturally reject non-numeric strings in browsers; Playwright's `page.fill` also enforces this — probe non-numeric price via `page.evaluate` if needed
+---

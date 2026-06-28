@@ -82,12 +82,12 @@ A Next.js + Tailwind CSS showcase website for a 3D prints business. Visitors can
 **Description:** As the shop owner, I want to add a new product so that it appears in the public catalog.
 
 **Acceptance Criteria:**
-- [ ] `/admin/products/new` renders a form with fields: name, description, price, imageUrl, category, available toggle
-- [ ] Submitting valid data creates the product and redirects to `/admin/products`
-- [ ] Required fields (name, price, imageUrl, category) show inline validation errors when blank
-- [ ] New product appears immediately in the admin list
-- [ ] Typecheck passes
-- [ ] Verify changes work in browser
+- [x] `/admin/products/new` renders a form with fields: name, description, price, imageUrl, category, available toggle
+- [x] Submitting valid data creates the product and redirects to `/admin/products`
+- [x] Required fields (name, price, imageUrl, category) show inline validation errors when blank
+- [x] New product appears immediately in the admin list
+- [x] Typecheck passes
+- [x] Verify changes work in browser
 
 ---
 
