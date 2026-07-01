@@ -16,6 +16,10 @@ export default function CatalogGrid({
   const categories = Array.from(new Set(products.map((p) => p.category))).sort();
   const [selected, setSelected] = useState(ALL);
 
+  const categoryDisplay = Object.fromEntries(
+    products.map((p) => [p.category, locale === "en" && p.categoryEn ? p.categoryEn : p.category])
+  );
+
   const filtered =
     selected === ALL ? products : products.filter((p) => p.category === selected);
 
@@ -42,7 +46,7 @@ export default function CatalogGrid({
                 : "bg-white text-gray-700 hover:bg-gray-100"
             }`}
           >
-            {t.catalog.categoryLabel(cat)}
+            {categoryDisplay[cat]}
           </button>
         ))}
       </div>
@@ -67,7 +71,7 @@ export default function CatalogGrid({
               </div>
               <div className="p-4">
                 <span className="text-xs font-medium text-indigo-600 uppercase tracking-wide">
-                  {t.catalog.categoryLabel(product.category)}
+                  {categoryDisplay[product.category]}
                 </span>
                 <h3 className="mt-1 text-base font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">
                   {locale === "en" && product.nameEn ? product.nameEn : product.name}

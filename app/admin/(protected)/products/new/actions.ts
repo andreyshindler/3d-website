@@ -34,6 +34,7 @@ export async function createProduct(
   const priceIlsStr = (formData.get("priceIls") as string) ?? "";
   const imageUrl = (formData.get("imageUrl") as string) ?? "";
   const category = (formData.get("category") as string) ?? "";
+  const categoryEn = (formData.get("categoryEn") as string) ?? "";
   const available = formData.get("available") === "on";
   const stockStr = (formData.get("stock") as string) ?? "0";
 
@@ -64,6 +65,7 @@ export async function createProduct(
       priceIls,
       imageUrl: imageUrl.trim(),
       category: category.trim(),
+      categoryEn: categoryEn.trim(),
       available,
       stock,
     },

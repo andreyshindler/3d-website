@@ -22,6 +22,7 @@ model Product {
   priceIls      Float    @default(0)
   imageUrl      String
   category      String
+  categoryEn    String   @default("")
   available     Boolean  @default(true)
   stock         Int      @default(0)
   createdAt     DateTime @default(now())
