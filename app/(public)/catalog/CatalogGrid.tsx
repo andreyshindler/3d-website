@@ -3,21 +3,35 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { ProductModel } from "@/app/generated/prisma/models";
+import { useLocale } from "@/app/components/LocaleProvider";
+
+const ALL = "__all__";
 
 export default function CatalogGrid({
   products,
 }: {
   products: ProductModel[];
 }) {
-  const categories = ["All", ...Array.from(new Set(products.map((p) => p.category))).sort()];
-  const [selected, setSelected] = useState("All");
+  const { t, locale } = useLocale();
+  const categories = Array.from(new Set(products.map((p) => p.category))).sort();
+  const [selected, setSelected] = useState(ALL);
 
   const filtered =
-    selected === "All" ? products : products.filter((p) => p.category === selected);
+    selected === ALL ? products : products.filter((p) => p.category === selected);
 
   return (
     <div>
       <div className="flex flex-wrap gap-2 mb-8">
+        <button
+          onClick={() => setSelected(ALL)}
+          className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+            selected === ALL
+              ? "bg-indigo-600 text-white"
+              : "bg-white text-gray-700 hover:bg-gray-100"
+          }`}
+        >
+          {t.catalog.all}
+        </button>
         {categories.map((cat) => (
           <button
             key={cat}
@@ -25,18 +39,16 @@ export default function CatalogGrid({
             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
               selected === cat
                 ? "bg-indigo-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                : "bg-white text-gray-700 hover:bg-gray-100"
             }`}
           >
-            {cat}
+            {t.catalog.categoryLabel(cat)}
           </button>
         ))}
       </div>
 
       {filtered.length === 0 ? (
-        <p className="text-center text-gray-500 py-20">
-          No products found in this category.
-        </p>
+        <p className="text-center text-gray-500 py-20">{t.catalog.noProducts}</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((product) => (
@@ -55,13 +67,13 @@ export default function CatalogGrid({
               </div>
               <div className="p-4">
                 <span className="text-xs font-medium text-indigo-600 uppercase tracking-wide">
-                  {product.category}
+                  {t.catalog.categoryLabel(product.category)}
                 </span>
                 <h3 className="mt-1 text-base font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">
-                  {product.name}
+                  {locale === "en" && product.nameEn ? product.nameEn : product.name}
                 </h3>
                 <p className="mt-1 text-lg font-bold text-gray-800">
-                  ${product.price.toFixed(2)}
+                  {t.formatPrice(locale === "he" ? product.priceIls : product.price)}
                 </p>
               </div>
             </Link>

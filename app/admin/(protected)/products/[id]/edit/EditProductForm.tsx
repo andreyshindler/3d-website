@@ -3,10 +3,12 @@
 import { useFormState, useFormStatus } from "react-dom";
 import { updateProduct, type UpdateProductState } from "../actions";
 import type { ProductModel } from "@/app/generated/prisma/models";
+import { useAdminLocale } from "@/app/components/AdminLocaleProvider";
+import { ImageUploadField } from "@/app/components/ImageUploadField";
 
 const initialState: UpdateProductState = {};
 
-function SubmitButton() {
+function SubmitButton({ label, pendingLabel }: { label: string; pendingLabel: string }) {
   const { pending } = useFormStatus();
   return (
     <button
@@ -14,157 +16,131 @@ function SubmitButton() {
       disabled={pending}
       className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors font-medium disabled:opacity-50"
     >
-      {pending ? "Saving…" : "Save Changes"}
+      {pending ? pendingLabel : label}
     </button>
   );
 }
 
 export function EditProductForm({ product }: { product: ProductModel }) {
+  const { t } = useAdminLocale();
+  const a = t.admin;
   const updateWithId = updateProduct.bind(null, product.id);
   const [state, formAction] = useFormState(updateWithId, initialState);
 
   return (
     <div className="max-w-xl">
       <div className="flex items-center gap-3 mb-6">
-        <a
-          href="/admin/products"
-          className="text-gray-500 hover:text-gray-700 text-sm"
-        >
-          ← Products
+        <a href="/admin/products" className="text-gray-500 hover:text-gray-700 text-sm">
+          {a.backToProducts}
         </a>
-        <h1 className="text-2xl font-bold text-gray-900">Edit Product</h1>
+        <h1 className="text-2xl font-bold text-gray-900">{a.editProduct}</h1>
       </div>
 
-      <form
-        action={formAction}
-        className="space-y-5 bg-white p-6 rounded-lg border border-gray-200"
-      >
+      <form action={formAction} className="space-y-5 bg-white p-6 rounded-lg border border-gray-200">
         <div>
-          <label
-            className="block text-sm font-medium text-gray-700 mb-1"
-            htmlFor="name"
-          >
-            Name <span className="text-red-500">*</span>
+          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="name">
+            {a.form.name} <span className="text-red-500">*</span>
           </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            defaultValue={product.name}
-            className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              state.errors?.name ? "border-red-400" : "border-gray-300"
-            }`}
+          <input id="name" name="name" type="text" defaultValue={product.name}
+            className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${state.errors?.name ? "border-red-400" : "border-gray-300"}`}
           />
-          {state.errors?.name && (
-            <p className="text-red-500 text-xs mt-1">{state.errors.name}</p>
-          )}
+          {state.errors?.name && <p className="text-red-500 text-xs mt-1">{state.errors.name}</p>}
         </div>
 
         <div>
-          <label
-            className="block text-sm font-medium text-gray-700 mb-1"
-            htmlFor="description"
-          >
-            Description
+          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="nameEn">
+            {a.form.nameEn}
           </label>
-          <textarea
-            id="description"
-            name="description"
-            rows={3}
-            defaultValue={product.description}
+          <input id="nameEn" name="nameEn" type="text" defaultValue={product.nameEn}
             className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         <div>
-          <label
-            className="block text-sm font-medium text-gray-700 mb-1"
-            htmlFor="price"
-          >
-            Price ($) <span className="text-red-500">*</span>
+          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="description">
+            {a.form.description}
           </label>
-          <input
-            id="price"
-            name="price"
-            type="number"
-            step="0.01"
-            min="0"
-            defaultValue={product.price}
-            className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              state.errors?.price ? "border-red-400" : "border-gray-300"
-            }`}
+          <textarea id="description" name="description" rows={3} defaultValue={product.description}
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          {state.errors?.price && (
-            <p className="text-red-500 text-xs mt-1">{state.errors.price}</p>
-          )}
         </div>
 
         <div>
-          <label
-            className="block text-sm font-medium text-gray-700 mb-1"
-            htmlFor="imageUrl"
-          >
-            Image URL <span className="text-red-500">*</span>
+          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="descriptionEn">
+            {a.form.descriptionEn}
           </label>
-          <input
-            id="imageUrl"
-            name="imageUrl"
-            type="url"
-            placeholder="https://..."
+          <textarea id="descriptionEn" name="descriptionEn" rows={3} defaultValue={product.descriptionEn}
+            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="priceUsd">
+              {a.form.priceUsd} <span className="text-red-500">*</span>
+            </label>
+            <input id="priceUsd" name="priceUsd" type="number" step="0.01" min="0" defaultValue={product.price}
+              className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${state.errors?.priceUsd ? "border-red-400" : "border-gray-300"}`}
+            />
+            {state.errors?.priceUsd && <p className="text-red-500 text-xs mt-1">{state.errors.priceUsd}</p>}
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="priceIls">
+              {a.form.priceIls} <span className="text-red-500">*</span>
+            </label>
+            <input id="priceIls" name="priceIls" type="number" step="0.01" min="0" defaultValue={product.priceIls}
+              className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${state.errors?.priceIls ? "border-red-400" : "border-gray-300"}`}
+            />
+            {state.errors?.priceIls && <p className="text-red-500 text-xs mt-1">{state.errors.priceIls}</p>}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            {a.form.imageUrl} <span className="text-red-500">*</span>
+          </label>
+          <ImageUploadField
             defaultValue={product.imageUrl}
-            className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              state.errors?.imageUrl ? "border-red-400" : "border-gray-300"
-            }`}
+            uploadLabel={a.form.uploadPhoto}
+            errorMsg={state.errors?.imageUrl}
           />
-          {state.errors?.imageUrl && (
-            <p className="text-red-500 text-xs mt-1">{state.errors.imageUrl}</p>
-          )}
         </div>
 
         <div>
-          <label
-            className="block text-sm font-medium text-gray-700 mb-1"
-            htmlFor="category"
-          >
-            Category <span className="text-red-500">*</span>
+          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="category">
+            {a.form.category} <span className="text-red-500">*</span>
           </label>
-          <input
-            id="category"
-            name="category"
-            type="text"
-            defaultValue={product.category}
-            className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-              state.errors?.category ? "border-red-400" : "border-gray-300"
-            }`}
+          <input id="category" name="category" type="text" defaultValue={product.category}
+            className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${state.errors?.category ? "border-red-400" : "border-gray-300"}`}
           />
-          {state.errors?.category && (
-            <p className="text-red-500 text-xs mt-1">{state.errors.category}</p>
-          )}
+          {state.errors?.category && <p className="text-red-500 text-xs mt-1">{state.errors.category}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="stock">
+            {a.form.stock} <span className="text-red-500">*</span>
+          </label>
+          <input id="stock" name="stock" type="number" min="0" step="1" defaultValue={product.stock}
+            className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${state.errors?.stock ? "border-red-400" : "border-gray-300"}`}
+          />
+          {state.errors?.stock && <p className="text-red-500 text-xs mt-1">{state.errors.stock}</p>}
         </div>
 
         <div className="flex items-center gap-2">
-          <input
-            id="available"
-            name="available"
-            type="checkbox"
-            defaultChecked={product.available}
+          <input id="available" name="available" type="checkbox" defaultChecked={product.available}
             className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
           />
-          <label
-            className="text-sm font-medium text-gray-700"
-            htmlFor="available"
-          >
-            Available for purchase
+          <label className="text-sm font-medium text-gray-700" htmlFor="available">
+            {a.form.available}
           </label>
         </div>
 
         <div className="flex gap-3 pt-2">
-          <SubmitButton />
-          <a
-            href="/admin/products"
+          <SubmitButton label={a.form.save} pendingLabel={a.form.saving} />
+          <a href="/admin/products"
             className="px-6 py-2 rounded border border-gray-300 text-sm text-gray-700 hover:bg-gray-50 transition-colors font-medium"
           >
-            Cancel
+            {a.form.cancel}
           </a>
         </div>
       </form>

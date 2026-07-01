@@ -1,0 +1,2 @@
+@memory.md
+@solutions.md
