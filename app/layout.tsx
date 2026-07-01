@@ -18,6 +18,13 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "3D Prints Shop",
   description: "Quality 3D prints for every occasion.",
+  openGraph: {
+    title: "3D Prints Shop",
+    description: "Quality 3D prints for every occasion.",
+    url: process.env.SITE_URL,
+    siteName: "3D Prints Shop",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
