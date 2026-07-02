@@ -28,12 +28,12 @@ export default async function ProductDetailPage({
       </Link>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div className="aspect-square bg-gray-100 rounded-xl overflow-hidden">
+        <div className="aspect-square bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={product.imageUrl}
             alt={product.name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
           />
         </div>
 
