@@ -12,7 +12,6 @@ function errs() {
 export type UpdateProductState = {
   errors?: {
     name?: string;
-    priceUsd?: string;
     priceIls?: string;
     imageUrl?: string;
     category?: string;
@@ -27,7 +26,6 @@ export async function updateProduct(
 ): Promise<UpdateProductState> {
   const name = (formData.get("name") as string) ?? "";
   const description = (formData.get("description") as string) ?? "";
-  const priceUsdStr = (formData.get("priceUsd") as string) ?? "";
   const priceIlsStr = (formData.get("priceIls") as string) ?? "";
   const imageUrl = (formData.get("imageUrl") as string) ?? "";
   const category = (formData.get("category") as string) ?? "";
@@ -38,8 +36,6 @@ export async function updateProduct(
 
   const e = errs();
   if (!name.trim()) errors.name = e.name;
-  const priceUsd = parseFloat(priceUsdStr);
-  if (!priceUsdStr.trim() || isNaN(priceUsd) || priceUsd < 0) errors.priceUsd = e.priceUsd;
   const priceIls = parseFloat(priceIlsStr);
   if (!priceIlsStr.trim() || isNaN(priceIls) || priceIls < 0) errors.priceIls = e.priceIls;
   if (!imageUrl.trim()) errors.imageUrl = e.imageUrl;
@@ -56,7 +52,7 @@ export async function updateProduct(
     data: {
       name: name.trim(),
       description: description.trim(),
-      price: priceUsd,
+      price: priceIls,
       priceIls,
       imageUrl: imageUrl.trim(),
       category: category.trim(),

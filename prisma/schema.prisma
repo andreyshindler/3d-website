@@ -12,6 +12,13 @@ datasource db {
   provider = "postgresql"
 }
 
+model BotSession {
+  chatId    String   @id
+  step      String   @default("idle")
+  data      String   @default("{}")
+  updatedAt DateTime @updatedAt
+}
+
 model Product {
   id            Int      @id @default(autoincrement())
   name          String
