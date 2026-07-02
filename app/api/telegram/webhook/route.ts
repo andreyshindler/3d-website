@@ -398,7 +398,9 @@ export async function POST(req: NextRequest) {
       });
       revalidatePath("/catalog");
       await clearSession(chatId);
-      await send(chatId, `✅ <b>${sd.name}</b> נוסף!\n\n/products לצפייה ברשימה.`);
+      await send(chatId, `✅ <b>${sd.name}</b> נוסף!`, {
+        reply_markup: { inline_keyboard: [[btn("📦 רשימת מוצרים", "list:0")]] },
+      });
       return NextResponse.json({ ok: true });
     }
 
@@ -445,7 +447,9 @@ export async function POST(req: NextRequest) {
       revalidatePath("/catalog");
       revalidatePath(`/catalog/${id}`);
       await clearSession(chatId);
-      await send(chatId, "✅ עודכן!\n\n/products לצפייה ברשימה.");
+      await send(chatId, "✅ עודכן!", {
+        reply_markup: { inline_keyboard: [[btn("📦 רשימת מוצרים", "list:0")]] },
+      });
       return NextResponse.json({ ok: true });
     }
   }
