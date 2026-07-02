@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 
 const TOKEN = process.env.TELEGRAM_BOT_TOKEN!;
@@ -212,6 +213,7 @@ export async function POST(req: NextRequest) {
     } else if (data.startsWith("delok:")) {
       const id = parseInt(data.split(":")[1], 10);
       await prisma.product.delete({ where: { id } });
+      revalidatePath("/catalog");
       await editMsg(chatId, msgId, "✅ המוצר נמחק.", {
         reply_markup: { inline_keyboard: [[btn("↩️ לרשימה", "list:0")]] },
       });
@@ -221,6 +223,7 @@ export async function POST(req: NextRequest) {
       const p = await prisma.product.findUnique({ where: { id } });
       if (!p) return NextResponse.json({ ok: true });
       await prisma.product.update({ where: { id }, data: { available: !p.available } });
+      revalidatePath("/catalog");
       await showProduct(chatId, msgId, id);
 
     } else if (data.startsWith("edit:") && data.split(":").length === 2) {
@@ -277,12 +280,14 @@ export async function POST(req: NextRequest) {
     // Built-in commands
     if (text === "/start" || text === "/help") {
       await clearSession(chatId);
-      await send(chatId,
-        "🖨 <b>ניהול מוצרים</b>\n\n" +
-        "/products — רשימת מוצרים\n" +
-        "/add — הוסף מוצר חדש\n" +
-        "/cancel — בטל פעולה נוכחית"
-      );
+      await send(chatId, "🖨 <b>ניהול מוצרים</b>", {
+        reply_markup: {
+          inline_keyboard: [
+            [btn("📦 רשימת מוצרים", "list:0")],
+            [btn("➕ הוסף מוצר חדש", "startadd")],
+          ],
+        },
+      });
       return NextResponse.json({ ok: true });
     }
 
@@ -375,6 +380,7 @@ export async function POST(req: NextRequest) {
           stock,
         },
       });
+      revalidatePath("/catalog");
       await clearSession(chatId);
       await send(chatId, `✅ <b>${sd.name}</b> נוסף!\n\n/products לצפייה ברשימה.`);
       return NextResponse.json({ ok: true });
@@ -420,6 +426,8 @@ export async function POST(req: NextRequest) {
       };
 
       await prisma.product.update({ where: { id }, data: fieldMap[field] });
+      revalidatePath("/catalog");
+      revalidatePath(`/catalog/${id}`);
       await clearSession(chatId);
       await send(chatId, "✅ עודכן!\n\n/products לצפייה ברשימה.");
       return NextResponse.json({ ok: true });
