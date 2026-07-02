@@ -282,11 +282,27 @@ export async function POST(req: NextRequest) {
       await clearSession(chatId);
       await send(chatId, "🖨 <b>ניהול מוצרים</b>", {
         reply_markup: {
-          inline_keyboard: [
-            [btn("📦 רשימת מוצרים", "list:0")],
-            [btn("➕ הוסף מוצר חדש", "startadd")],
+          keyboard: [
+            [{ text: "📦 רשימת מוצרים" }],
+            [{ text: "➕ הוסף מוצר חדש" }],
           ],
+          resize_keyboard: true,
+          persistent: true,
         },
+      });
+      return NextResponse.json({ ok: true });
+    }
+
+    if (text === "📦 רשימת מוצרים") {
+      await clearSession(chatId);
+      await showProductList(chatId, 0);
+      return NextResponse.json({ ok: true });
+    }
+
+    if (text === "➕ הוסף מוצר חדש") {
+      await setSession(chatId, "add:name");
+      await send(chatId, "➕ <b>מוצר חדש</b>\n\nהזן שם מוצר:\n/cancel לביטול", {
+        reply_markup: { force_reply: true },
       });
       return NextResponse.json({ ok: true });
     }
