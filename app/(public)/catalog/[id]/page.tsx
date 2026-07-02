@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { getLocale } from "@/lib/locale";
 import { getTranslations } from "@/lib/i18n";
 
 export default async function ProductDetailPage({
@@ -9,8 +8,7 @@ export default async function ProductDetailPage({
 }: {
   params: { id: string };
 }) {
-  const locale = getLocale();
-  const t = getTranslations(locale);
+  const t = getTranslations("he");
   const id = parseInt(params.id, 10);
   if (isNaN(id)) notFound();
 
@@ -19,14 +17,6 @@ export default async function ProductDetailPage({
   });
 
   if (!product) notFound();
-
-  const displayName =
-    locale === "en" && product.nameEn ? product.nameEn : product.name;
-  const displayDescription =
-    locale === "en" && product.descriptionEn
-      ? product.descriptionEn
-      : product.description;
-  const displayCategory = t.catalog.categoryLabel(product.category);
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -42,22 +32,22 @@ export default async function ProductDetailPage({
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={product.imageUrl}
-            alt={displayName}
+            alt={product.name}
             className="w-full h-full object-cover"
           />
         </div>
 
         <div className="flex flex-col justify-start">
           <span className="text-sm font-medium text-indigo-600 uppercase tracking-wide">
-            {displayCategory}
+            {t.catalog.categoryLabel(product.category)}
           </span>
-          <h1 className="mt-2 text-3xl font-bold text-gray-900">{displayName}</h1>
+          <h1 className="mt-2 text-3xl font-bold text-gray-900">{product.name}</h1>
           <p className="mt-3 text-2xl font-semibold text-gray-800">
-            {t.formatPrice(locale === "he" ? product.priceIls : product.price)}
+            {t.formatPrice(product.priceIls)}
           </p>
 
-          {displayDescription && (
-            <p className="mt-5 text-gray-600 leading-relaxed">{displayDescription}</p>
+          {product.description && (
+            <p className="mt-5 text-gray-600 leading-relaxed">{product.description}</p>
           )}
 
           <p className="mt-4">

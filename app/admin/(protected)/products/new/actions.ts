@@ -3,12 +3,10 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { getTranslations, type Locale } from "@/lib/i18n";
-import { cookies } from "next/headers";
+import { getTranslations } from "@/lib/i18n";
 
 function errs() {
-  const locale = (cookies().get("admin_locale")?.value ?? "he") as Locale;
-  return getTranslations(locale).admin.form.errors;
+  return getTranslations("he").admin.form.errors;
 }
 
 export type CreateProductState = {
@@ -27,14 +25,11 @@ export async function createProduct(
   formData: FormData
 ): Promise<CreateProductState> {
   const name = (formData.get("name") as string) ?? "";
-  const nameEn = (formData.get("nameEn") as string) ?? "";
   const description = (formData.get("description") as string) ?? "";
-  const descriptionEn = (formData.get("descriptionEn") as string) ?? "";
   const priceUsdStr = (formData.get("priceUsd") as string) ?? "";
   const priceIlsStr = (formData.get("priceIls") as string) ?? "";
   const imageUrl = (formData.get("imageUrl") as string) ?? "";
   const category = (formData.get("category") as string) ?? "";
-  const categoryEn = (formData.get("categoryEn") as string) ?? "";
   const available = formData.get("available") === "on";
   const stockStr = (formData.get("stock") as string) ?? "0";
 
@@ -58,14 +53,11 @@ export async function createProduct(
   await prisma.product.create({
     data: {
       name: name.trim(),
-      nameEn: nameEn.trim(),
       description: description.trim(),
-      descriptionEn: descriptionEn.trim(),
       price: priceUsd,
       priceIls,
       imageUrl: imageUrl.trim(),
       category: category.trim(),
-      categoryEn: categoryEn.trim(),
       available,
       stock,
     },

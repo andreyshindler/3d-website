@@ -3,7 +3,7 @@
 import { useAdminLocale } from "@/app/components/AdminLocaleProvider";
 
 export default function AdminNav() {
-  const { t, toggleLocale } = useAdminLocale();
+  const { t } = useAdminLocale();
 
   return (
     <nav className="bg-gray-900 text-white px-6 py-4 flex justify-between items-center">
@@ -25,12 +25,6 @@ export default function AdminNav() {
             {t.admin.logout}
           </button>
         </form>
-        <button
-          onClick={toggleLocale}
-          className="text-sm text-gray-400 hover:text-white border border-gray-600 rounded px-2 py-0.5 transition-colors"
-        >
-          {t.lang.toggle}
-        </button>
       </div>
     </nav>
   );

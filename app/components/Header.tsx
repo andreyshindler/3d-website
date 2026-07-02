@@ -8,7 +8,7 @@ import { useLocale } from "@/app/components/LocaleProvider";
 export default function Header() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { t, toggleLocale } = useLocale();
+  const { t } = useLocale();
 
   const navLinks = [
     { href: "/", label: t.nav.home },
@@ -43,21 +43,9 @@ export default function Header() {
                 </Link>
               ))}
             </nav>
-            <button
-              onClick={toggleLocale}
-              className="text-sm font-medium text-gray-500 hover:text-indigo-600 border border-gray-300 rounded-md px-3 py-1 transition-colors"
-            >
-              {t.lang.toggle}
-            </button>
           </div>
 
           <div className="sm:hidden flex items-center gap-2">
-            <button
-              onClick={toggleLocale}
-              className="text-sm font-medium text-gray-500 hover:text-indigo-600 border border-gray-300 rounded-md px-2 py-1 transition-colors"
-            >
-              {t.lang.toggle}
-            </button>
             <button
               className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
               onClick={() => setMenuOpen((o) => !o)}

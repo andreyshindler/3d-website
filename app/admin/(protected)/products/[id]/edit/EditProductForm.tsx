@@ -48,28 +48,10 @@ export function EditProductForm({ product }: { product: ProductModel }) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="nameEn">
-            {a.form.nameEn}
-          </label>
-          <input id="nameEn" name="nameEn" type="text" defaultValue={product.nameEn}
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
           <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="description">
             {a.form.description}
           </label>
           <textarea id="description" name="description" rows={3} defaultValue={product.description}
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="descriptionEn">
-            {a.form.descriptionEn}
-          </label>
-          <textarea id="descriptionEn" name="descriptionEn" rows={3} defaultValue={product.descriptionEn}
             className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -114,15 +96,6 @@ export function EditProductForm({ product }: { product: ProductModel }) {
             className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${state.errors?.category ? "border-red-400" : "border-gray-300"}`}
           />
           {state.errors?.category && <p className="text-red-500 text-xs mt-1">{state.errors.category}</p>}
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1" htmlFor="categoryEn">
-            {a.form.categoryEn}
-          </label>
-          <input id="categoryEn" name="categoryEn" type="text" defaultValue={product.categoryEn}
-            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
         </div>
 
         <div>
